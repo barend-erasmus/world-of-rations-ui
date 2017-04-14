@@ -26,12 +26,12 @@ export class FeedstuffService extends BaseService {
       .map((res: Response) => res.json());
   }
 
-  public findSuggestedValues(formulaId: string, feedstuffId: string) {
+  public findSuggestedValues(formulaId: string, feedstuffId: string): Observable<any> {
     return this.get(environment.api.uri + '/api/feedstuff/findSuggestedValues?formulaId=' + formulaId + '&feedstuffId=' + feedstuffId)
       .map((res: Response) => res.json());
   }
 
-  public listExampleFeedstuffs() {
+  public listExampleFeedstuffs(): Observable<any[]> {
     return this.get(environment.api.uri + '/api/feedstuff/listExampleFeedstuffs')
       .map((res: Response) => {
         const result: any[] = res.json();

@@ -21,7 +21,7 @@ export class FormulatorService extends BaseService {
     super(http);
    }
 
-  public formulate(obj: any) {
+  public formulate(obj: any): Observable<any> {
     return this.post(environment.api.uri + '/api/formulator/formulate', obj)
     .map((res: Response) => res.json());
   }

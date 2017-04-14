@@ -2,6 +2,7 @@
 import { Headers, Http, RequestOptions, Response } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
 export class BaseService {
 
@@ -9,7 +10,7 @@ export class BaseService {
 
     }
 
-    protected post(uri: string, obj: any) {
+    protected post(uri: string, obj: any): Observable<Response> {
         const headers = new Headers();
 
         const jwtToken = localStorage.getItem('jwt.token');
@@ -23,7 +24,7 @@ export class BaseService {
         });
     }
 
-    protected get(uri: string) {
+    protected get(uri: string): Observable<Response> {
         const headers = new Headers();
 
         const jwtToken = localStorage.getItem('jwt.token');

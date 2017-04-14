@@ -23,12 +23,16 @@ export class FooterComponent implements OnInit {
     this.loadFormulations();
   }
 
-  private loadFormulations() {
-    this.mainService.formulatorService.listFormulations().subscribe((listFormulationsResult: Formulation[]) => {
-      this.formulations = listFormulationsResult;
-    }, (error: Error) => {
-      // console.log(error);
-    });
+  private loadFormulations(): void {
+    this.mainService.formulatorService.listFormulations().subscribe(this.subscribeToFormulatorServiceListFormulations, this.handleError);
+  }
+
+  private subscribeToFormulatorServiceListFormulations(listFormulationsResult: Formulation[]) {
+    this.formulations = listFormulationsResult;
+  }
+
+  private handleError(error: Error) {
+    console.error(error);
   }
 
 }

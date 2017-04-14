@@ -7,18 +7,18 @@ import { RouterModule, UrlSerializer } from '@angular/router';
 
 import { LowerCaseUrlSerializer } from './lower-case-url-serializer';
 
-// Plugins
+// Imports plugins
 import { TypeaheadModule } from 'ng2-bootstrap';
 import { PositioningService } from 'ng2-bootstrap';
 import { ComponentLoaderFactory } from 'ng2-bootstrap/component-loader';
 import { SelectModule } from 'ng2-select';
 
-// Components
-// import { AboutComponent } from './about/about.component';
+// Imports components
+import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 // import { FormulationComponent } from './formulation/formulation.component';
-// import { FormulatorComponent } from './formulator/formulator.component';
+import { FormulatorComponent } from './formulator/formulator.component';
 import { HomeComponent } from './home/home.component';
 // import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -39,18 +39,18 @@ const router = RouterModule.forRoot([
     component: HomeComponent,
     path: '',
   },
-  // {
-  //   path: 'about',
-  //   component: AboutComponent,
-  // },
+  {
+    component: AboutComponent,
+    path: 'about',
+  },
   // {
   //   path: 'login',
   //   component: LoginComponent,
   // },
-  // {
-  //   path: 'formulator',
-  //   component: FormulatorComponent,
-  // },
+  {
+    component: FormulatorComponent,
+    path: 'formulator',
+  },
   // {
   //   path: 'formulation',
   //   component: FormulationComponent,
@@ -77,9 +77,9 @@ const router = RouterModule.forRoot([
   bootstrap: [AppComponent, NavbarComponent],
   declarations: [
     AppComponent,
-    // FormulatorComponent,
+    FormulatorComponent,
     HomeComponent,
-    // AboutComponent,
+    AboutComponent,
     // LoginComponent,
     NavbarComponent,
     // FormulationComponent,

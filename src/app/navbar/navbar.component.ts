@@ -20,7 +20,16 @@ export class NavbarComponent implements OnInit {
   constructor(private http: Http) { }
 
   public ngOnInit() {
+    this.validateJWT();
+  }
 
+  public logout(): void {
+    localStorage.removeItem('jwt.token');
+    this.isAuthenticated = localStorage.getItem('jwt.token') != null;
+    this.decodedToken = null;
+  }
+
+  private validateJWT(): void {
     const headers = new Headers();
 
     const jwtToken = localStorage.getItem('jwt.token');
@@ -28,7 +37,7 @@ export class NavbarComponent implements OnInit {
       headers.append('Authorization', 'Bearer ' + jwtToken);
     }
 
-    return this.http.get(`${environment.api.uri}/api/auth/verify`, {
+    this.http.get(`${environment.api.uri}/api/auth/verify`, {
       headers,
     }).map((res: Response) => res).subscribe((result: Response) => {
       if (result.status === 200) {
@@ -36,18 +45,9 @@ export class NavbarComponent implements OnInit {
         this.isAuthenticated = true;
       }
     }, (error: Error) => {
-      this.decodedToken = null;
-      this.isAuthenticated = false;
-
       if (window.location.pathname !== '/login') {
-        localStorage.removeItem('jwt.token');
+        this.logout();
       }
-
     });
-  }
-
-  public logout() {
-    localStorage.removeItem('jwt.token');
-    this.isAuthenticated = localStorage.getItem('jwt.token') != null;
   }
 }

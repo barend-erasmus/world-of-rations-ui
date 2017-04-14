@@ -18,12 +18,12 @@ export class OwnFeedstuffsService extends BaseService {
     super(http);
   }
 
-  public listFeedstuffsForUser() {
+  public listFeedstuffsForUser(): Observable<any[]> {
     return this.get(environment.api.uri + '/api/feedstuff/listUserFeedstuffs')
       .map((res: Response) => res.json());
   }
 
-  public createFeedstuffForUser(name: string, description: string) {
+  public createFeedstuffForUser(name: string, description: string): Observable<any> {
     return this.post(environment.api.uri + '/api/feedstuff/createUserFeedstuff', {
       name,
       description,
@@ -31,17 +31,17 @@ export class OwnFeedstuffsService extends BaseService {
       .map((res: Response) => res.json());
   }
 
-  public listUserFeedstuffMeasurements(feedstuffId: string) {
+  public listUserFeedstuffMeasurements(feedstuffId: string): Observable<any[]> {
     return this.get(environment.api.uri + `/api/feedstuff/listUserFeedstuffMeasurements?feedstuffId=${feedstuffId}`)
       .map((res: Response) => res.json());
   }
 
-  public findUserFeedstuff(feedstuffId: string) {
+  public findUserFeedstuff(feedstuffId: string): Observable<any> {
     return this.get(environment.api.uri + `/api/feedstuff/findUserFeedstuff?feedstuffId=${feedstuffId}`)
       .map((res: Response) => res.json());
   }
 
-  public saveUserFeedstuffMeasurements(feedstuffId: string, measurements: any[]) {
+  public saveUserFeedstuffMeasurements(feedstuffId: string, measurements: any[]): Observable<any> {
     return this.post(environment.api.uri + `/api/feedstuff/saveUserFeedstuffMeasurements`, {
       feedstuffId,
       measurements,
