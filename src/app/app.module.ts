@@ -17,15 +17,15 @@ import { SelectModule } from 'ng2-select';
 import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
-// import { FormulationComponent } from './formulation/formulation.component';
+import { FormulationComponent } from './formulation/formulation.component';
 import { FormulatorComponent } from './formulator/formulator.component';
 import { HomeComponent } from './home/home.component';
-// import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
-// import { OwnFeedstuffEditComponent } from './own-feedstuff-edit/own-feedstuff-edit.component';
-// import { OwnFeedstuffsComponent } from './own-feedstuffs/own-feedstuffs.component';
-// import { TermsComponent } from './terms/terms.component';
-// import { TipsComponent } from './tips/tips.component';
+import { OwnFeedstuffEditComponent } from './own-feedstuff-edit/own-feedstuff-edit.component';
+import { OwnFeedstuffsComponent } from './own-feedstuffs/own-feedstuffs.component';
+import { TermsComponent } from './terms/terms.component';
+import { TipsComponent } from './tips/tips.component';
 
 // Services
 import { FeedstuffService } from './services/feedstuff.service';
@@ -43,34 +43,34 @@ const router = RouterModule.forRoot([
     component: AboutComponent,
     path: 'about',
   },
-  // {
-  //   path: 'login',
-  //   component: LoginComponent,
-  // },
+  {
+    component: LoginComponent,
+    path: 'login',
+  },
   {
     component: FormulatorComponent,
     path: 'formulator',
   },
-  // {
-  //   path: 'formulation',
-  //   component: FormulationComponent,
-  // },
-  // {
-  //   path: 'tips',
-  //   component: TipsComponent,
-  // },
-  // {
-  //   path: 'terms',
-  //   component: TermsComponent,
-  // },
-  // {
-  //   path: 'ownfeedstuffs',
-  //   component: OwnFeedstuffsComponent,
-  // },
-  // {
-  //   path: 'ownfeedstuffedit',
-  //   component: OwnFeedstuffEditComponent,
-  // },
+  {
+    component: FormulationComponent,
+    path: 'formulation',
+  },
+  {
+    component: TipsComponent,
+    path: 'tips',
+  },
+  {
+    component: TermsComponent,
+    path: 'terms',
+  },
+  {
+    component: OwnFeedstuffsComponent,
+    path: 'ownfeedstuffs',
+  },
+  {
+    component: OwnFeedstuffEditComponent,
+    path: 'ownfeedstuffedit',
+  },
 ]);
 
 @NgModule({
@@ -80,14 +80,14 @@ const router = RouterModule.forRoot([
     FormulatorComponent,
     HomeComponent,
     AboutComponent,
-    // LoginComponent,
+    LoginComponent,
     NavbarComponent,
-    // FormulationComponent,
-    // TipsComponent,
-    // TermsComponent,
+    FormulationComponent,
+    TipsComponent,
+    TermsComponent,
     FooterComponent,
-    // OwnFeedstuffsComponent,
-    // OwnFeedstuffEditComponent,
+    OwnFeedstuffsComponent,
+    OwnFeedstuffEditComponent,
   ],
   imports: [
     BrowserModule,

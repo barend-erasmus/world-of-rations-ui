@@ -33,6 +33,7 @@ export class NavbarComponent implements OnInit {
     const headers = new Headers();
 
     const jwtToken = localStorage.getItem('jwt.token');
+
     if (jwtToken !== null || jwtToken === '') {
       headers.append('Authorization', 'Bearer ' + jwtToken);
     }

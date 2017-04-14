@@ -25,7 +25,19 @@ export class FormulationComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private formulatorService: FormulatorService) { }
 
   public ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(this.subscribeToActivatedRouteQueryParams);
+    this.activatedRoute.queryParams.subscribe((params: Params): void => {
+      const formulationId = params['formulationId'];
+      this.formulatorService.findFormulation(formulationId).subscribe((formulation: Formulation): void => {
+        formulation.feedstuffs.sort((a: Feedstuff, b: Feedstuff) => {
+          return (b.weight < a.weight) ? -1 : 1;
+        });
+        formulation.composition.sort((a: Element, b: Element) => {
+          return (a.sortOrder < b.sortOrder) ? -1 : 1;
+        });
+        this.formulation = formulation;
+        this.updateTotals();
+      });
+    });
   }
 
   public onSelect_SupplementFeedstuff(supplementElement, selectedSupplementFeedstuff): void {
@@ -39,22 +51,6 @@ export class FormulationComponent implements OnInit {
       }
     }
 
-    this.updateTotals();
-  }
-
-  private subscribeToActivatedRouteQueryParams(params: Params): void {
-    const formulationId = params['formulationId'];
-    this.formulatorService.findFormulation(formulationId).subscribe(this.subscribeToFormulatorServiceFindFormulation);
-  }
-
-  private subscribeToFormulatorServiceFindFormulation(formulation: Formulation): void {
-    formulation.feedstuffs.sort((a: Feedstuff, b: Feedstuff) => {
-      return (b.weight < a.weight) ? -1 : 1;
-    });
-    formulation.composition.sort((a: Element, b: Element) => {
-      return (a.sortOrder < b.sortOrder) ? -1 : 1;
-    });
-    this.formulation = formulation;
     this.updateTotals();
   }
 
