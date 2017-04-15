@@ -17,3 +17,5 @@ Install node packages
 Start project
 
 `npm start`
+
+Browse `http://localhost:4200`
