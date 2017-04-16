@@ -34,6 +34,9 @@ export class FormulationComponent implements OnInit {
         formulation.composition.sort((a: Element, b: Element) => {
           return (a.sortOrder < b.sortOrder) ? -1 : 1;
         });
+
+        formulation.feedstuffs = formulation.feedstuffs.filter((x) => x.weight !== 0);
+
         this.formulation = formulation;
         this.updateTotals();
       });
