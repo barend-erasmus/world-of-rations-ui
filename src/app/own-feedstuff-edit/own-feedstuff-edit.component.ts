@@ -22,21 +22,19 @@ export class OwnFeedstuffEditComponent implements OnInit {
         this.feedstuff = getFeedstuffResult;
         this.feedstuff.id = feedstuffId;
 
-        this.ownFeedstuffsService.listUserFeedstuffMeasurements(feedstuffId).subscribe((listMeasurementsResult: any[]) => {
-          this.elements = listMeasurementsResult;
-        });
+        this.elements = this.feedstuff.elements;
 
       });
     });
   }
 
   public onClick_Save() {
-    this.ownFeedstuffsService.saveUserFeedstuffMeasurements(this.feedstuff.id, this.elements.map((x) => {
+    this.ownFeedstuffsService.saveUserFeedstuff(this.feedstuff, this.elements.map((x) => {
       return {
         id: x.id,
         value: x.value,
       };
-    })).subscribe((saveUserFeedstuffMeasurementsResult: boolean) => {
+    })).subscribe((saveUserFeedstuffResult: boolean) => {
       window.location.href = '/ownfeedstuffs';
     });
   }

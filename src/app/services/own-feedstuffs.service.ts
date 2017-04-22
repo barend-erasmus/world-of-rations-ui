@@ -31,20 +31,17 @@ export class OwnFeedstuffsService extends BaseService {
       .map((res: Response) => res.json());
   }
 
-  public listUserFeedstuffMeasurements(feedstuffId: string): Observable<any[]> {
-    return this.get(environment.api.uri + `/api/feedstuff/listUserFeedstuffMeasurements?feedstuffId=${feedstuffId}`)
-      .map((res: Response) => res.json());
-  }
-
   public findUserFeedstuff(feedstuffId: string): Observable<any> {
     return this.get(environment.api.uri + `/api/feedstuff/findUserFeedstuff?feedstuffId=${feedstuffId}`)
       .map((res: Response) => res.json());
   }
 
-  public saveUserFeedstuffMeasurements(feedstuffId: string, measurements: any[]): Observable<any> {
-    return this.post(environment.api.uri + `/api/feedstuff/saveUserFeedstuffMeasurements`, {
-      feedstuffId,
-      measurements,
+  public saveUserFeedstuff(feedstuff: any, measurements: any[]): Observable<any> {
+    return this.post(environment.api.uri + `/api/feedstuff/saveUserFeedstuff`, {
+      feedstuffId: feedstuff.id,
+      name: feedstuff.name, 
+      description: feedstuff.description,
+      elements: measurements,
     })
       .map((res: Response) => res.json());
   }
