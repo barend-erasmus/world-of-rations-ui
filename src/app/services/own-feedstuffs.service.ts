@@ -38,10 +38,10 @@ export class OwnFeedstuffsService extends BaseService {
 
   public saveUserFeedstuff(feedstuff: any, measurements: any[]): Observable<any> {
     return this.post(environment.api.uri + `/api/feedstuff/saveUserFeedstuff`, {
-      feedstuffId: feedstuff.id,
-      name: feedstuff.name, 
       description: feedstuff.description,
       elements: measurements,
+      feedstuffId: feedstuff.id,
+      name: feedstuff.name,
     })
       .map((res: Response) => res.json());
   }
