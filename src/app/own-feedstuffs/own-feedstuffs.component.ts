@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 // Services
-import { OwnFeedstuffsService } from '../services/own-feedstuffs.service';
+import { MainService } from '../services/main.service';
 
 @Component({
   selector: 'app-own-feedstuffs',
@@ -19,10 +19,10 @@ export class OwnFeedstuffsComponent implements OnInit {
     name: null,
   };
 
-  constructor(private ownFeedstuffsService: OwnFeedstuffsService) { }
+  constructor(private mainService: MainService) { }
 
   public ngOnInit() {
-    this.ownFeedstuffsService.listFeedstuffsForUser().subscribe((result: any[]) => {
+    this.mainService.feedstuffService.listUserFeedstuffs().subscribe((result: any[]) => {
       this.feedstuffs = result;
     }, (error: Error) => {
       this.errorMessage = 'An error has occurred while loading feedstuff';
@@ -35,7 +35,7 @@ export class OwnFeedstuffsComponent implements OnInit {
       this.newFeedstuff.errorMessage = 'Please enter a name';
       return;
     }
-    this.ownFeedstuffsService.createFeedstuffForUser(this.newFeedstuff.name, null).subscribe((result: any) => {
+    this.mainService.feedstuffService.createUserFeedstuff(this.newFeedstuff.name, null).subscribe((result: any) => {
       window.location.href = `/ownfeedstuffedit?feedstuffId=${result.id}`;
     }, (error: Error) => {
       this.newFeedstuff.errorMessage = 'An error has occurred while creating feedstuff';

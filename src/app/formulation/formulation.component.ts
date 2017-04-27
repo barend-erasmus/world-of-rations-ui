@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 // Imports services
-import { FormulatorService } from '../services/formulator.service';
+import { MainService } from '../services/main.service';
 
 // Imports models
 import { Element } from './../models/element';
 import { Feedstuff } from './../models/feedstuff';
 import { Formulation } from './../models/formulation';
+import { FormulationFeedstuff } from './../models/formulation-feedstuff';
 
 @Component({
   selector: 'app-formulation',
@@ -22,13 +23,13 @@ export class FormulationComponent implements OnInit {
   public totalCostOfFeedstuffInFormulation: string;
   public totalWeightOfSupplementFeedstuffInFormulation: number;
 
-  constructor(private activatedRoute: ActivatedRoute, private formulatorService: FormulatorService) { }
+  constructor(private activatedRoute: ActivatedRoute, private mainService: MainService) { }
 
   public ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params): void => {
       const formulationId = params['formulationId'];
-      this.formulatorService.findFormulation(formulationId).subscribe((formulation: Formulation): void => {
-        formulation.feedstuffs.sort((a: Feedstuff, b: Feedstuff) => {
+      this.mainService.formulatorService.findFormulation(formulationId).subscribe((formulation: Formulation): void => {
+        formulation.feedstuffs.sort((a: FormulationFeedstuff, b: FormulationFeedstuff) => {
           return (b.weight < a.weight) ? -1 : 1;
         });
         formulation.composition.sort((a: Element, b: Element) => {
@@ -72,6 +73,6 @@ export class FormulationComponent implements OnInit {
   }
 
   private getTotalWeightOfSupplementFeedstuffInFormulation(): number {
-    return this.formulation.supplementComposition.map((x) => x.selectedSupplementFeedstuffs[0] === undefined ? 0 : x.selectedSupplementFeedstuffs[0].weight).reduce((a, b) => a + b, 0);
+    return this.formulation.supplementElements.map((x) => x.selectedSupplementFeedstuffs[0] === undefined ? 0 : x.selectedSupplementFeedstuffs[0].weight).reduce((a, b) => a + b, 0);
   }
 }

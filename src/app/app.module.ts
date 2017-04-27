@@ -32,7 +32,6 @@ import { FeedstuffService } from './services/feedstuff.service';
 import { FormulaService } from './services/formula.service';
 import { FormulatorService } from './services/formulator.service';
 import { MainService } from './services/main.service';
-import { OwnFeedstuffsService } from './services/own-feedstuffs.service';
 
 const router = RouterModule.forRoot([
   {
@@ -104,7 +103,6 @@ const router = RouterModule.forRoot([
     FormulatorService,
     ComponentLoaderFactory,
     PositioningService,
-    OwnFeedstuffsService,
     {
       provide: UrlSerializer,
       useClass: LowerCaseUrlSerializer,

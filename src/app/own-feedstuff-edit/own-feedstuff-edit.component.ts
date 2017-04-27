@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 // Services
-import { OwnFeedstuffsService } from '../services/own-feedstuffs.service';
+import { MainService } from '../services/main.service';
 
 @Component({
   selector: 'app-own-feedstuff-edit',
@@ -13,12 +13,12 @@ export class OwnFeedstuffEditComponent implements OnInit {
   public feedstuff: any = null;
   public elements: any[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private ownFeedstuffsService: OwnFeedstuffsService) { }
+  constructor(private activatedRoute: ActivatedRoute, private mainService: MainService) { }
 
   public ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       const feedstuffId = params['feedstuffId'];
-      this.ownFeedstuffsService.findUserFeedstuff(feedstuffId).subscribe((getFeedstuffResult: any) => {
+      this.mainService.feedstuffService.findUserFeedstuff(feedstuffId).subscribe((getFeedstuffResult: any) => {
         this.feedstuff = getFeedstuffResult;
         this.feedstuff.id = feedstuffId;
 
@@ -29,12 +29,7 @@ export class OwnFeedstuffEditComponent implements OnInit {
   }
 
   public onClick_Save() {
-    this.ownFeedstuffsService.saveUserFeedstuff(this.feedstuff, this.elements.map((x) => {
-      return {
-        id: x.id,
-        value: x.value,
-      };
-    })).subscribe((saveUserFeedstuffResult: boolean) => {
+    this.mainService.feedstuffService.saveUserFeedstuff(this.feedstuff).subscribe((saveUserFeedstuffResult: any) => {
       window.location.href = '/ownfeedstuffs';
     });
   }

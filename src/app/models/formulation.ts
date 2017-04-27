@@ -1,11 +1,19 @@
 // Imports models
-import { Element } from './element';
-import { Feedstuff } from './feedstuff';
+import { CompositionElement } from './composition-element';
 import { Formula } from './formula';
+import { FormulationFeedstuff } from './formulation-feedstuff';
+import { SupplementElement } from './supplement-element';
 
 export class Formulation {
-
-    constructor(public id: string, public formula: Formula, public currencyCode, public feedstuffs: Feedstuff[], public composition: Element[], public supplementComposition: Element[]) {
+    constructor(
+        public id: string,
+        public feasible: boolean,
+        public currencyCode: string,
+        public cost: number,
+        public feedstuffs: FormulationFeedstuff[],
+        public formula: Formula,
+        public composition: CompositionElement[],
+        public supplementElements: SupplementElement[]) {
 
     }
 }
