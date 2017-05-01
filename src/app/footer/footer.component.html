@@ -5,8 +5,8 @@
           <h3 class="footer_header">
             Previous Formulations
           </h3>
-          <ul *ngIf="formulations != null">
-            <li *ngFor="let item of formulations"><a href="/formulation?formulationId={{item.id}}">{{item.formula.name}}</a></li>
+          <ul>
+            <li *ngFor="let item of model?.formulations"><a href="/formulation?formulationId={{item.id}}">{{item.formula.name}}</a></li>
           </ul>
         </div>
         <div class="col-sm-4">

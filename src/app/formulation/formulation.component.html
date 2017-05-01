@@ -1,4 +1,4 @@
-<div id="showcase">
+<div id="showcase" *ngIf="model?.isActive">
   <div class="container">
     <div class="section_header">
       <h3>Least Cost Ration Formulator - Results</h3>
@@ -6,9 +6,9 @@
       <br />
       <br />
       <p>The following results are computed by using the data supplied to the formulator.</p>
-      <p *ngIf="formulation != null">
-        The {{formulation.feedstuffs.length}} feedstuff(s) supplied to the formulator was used in conjunction with the 
-        nutrient values for <b>{{formulation.formula.name}}</b> to compute a least-cost ration.
+      <p>
+        The {{model?.formulation.feedstuffs.length}} feedstuff(s) supplied to the formulator was used in conjunction with the 
+        nutrient values for <b>{{model?.formulation.formula.name}}</b> to compute a least-cost ration.
       </p>
     </div>
     <div class="row feature_wrapper">
@@ -23,27 +23,27 @@
               Weight (kg)
             </th>
             <th>
-              Cost ({{formulation == null? '?' : formulation.currencyCode}})
+              Cost ({{model?.formulation == null? '?' : model?.formulation.currencyCode}})
             </th>
           </tr>
         </thead>
-        <tbody *ngIf="formulation != null">
-          <tr *ngFor="let item of formulation.feedstuffs;">
+        <tbody>
+          <tr *ngFor="let item of model.formulation.feedstuffs;">
             <td *ngIf="item.weight != null">{{item.name}}</td>
             <td *ngIf="item.weight != null">{{item.weight | number:'1.2-2'}} kg</td>
-            <td *ngIf="item.weight != null">{{item.cost | currency: formulation.currencyCode :true}} per tonne</td>
+            <td *ngIf="item.weight != null">{{item.cost | currency: model?.formulation.currencyCode :true}} per tonne</td>
           </tr>
         </tbody>
-        <tfoot *ngIf="formulation != null">
+        <tfoot>
           <tr>
             <th>
               Totals
             </th>
             <th>
-              {{totalWeightOfFeedstuffInFormulation}} kg
+              {{model?.totalWeightOfFeedstuffInFormulation}} kg
             </th>
             <th>
-              {{totalCostOfFeedstuffInFormulation | currency: formulation.currencyCode :true}}
+              {{model?.totalCostOfFeedstuffInFormulation | currency: model?.formulation.currencyCode :true}}
             </th>
           </tr>
         </tfoot>
@@ -63,8 +63,8 @@
             </th>
           </tr>
         </thead>
-        <tbody *ngIf="formulation != null">
-          <tr *ngFor="let item of formulation.composition;">
+        <tbody>
+          <tr *ngFor="let item of model?.formulation.composition;">
             <td>{{item.name}}</td>
             <td>{{item.value | number:'1.2-2'}} {{item.unit}}</td>
             <td [ngClass]="item.status == 'Inadequate'? 'text-warning' : item.status == 'Excessive'? 'text-danger' : 'text-success'">
@@ -88,13 +88,13 @@
             </th>
           </tr>
         </thead>
-        <tbody *ngIf="formulation != null">
-          <tr *ngFor="let item of formulation.supplementElements;">
+        <tbody>
+          <tr *ngFor="let item of model?.formulation.supplementElements;">
             <td>
               {{item.name}}
             </td>
             <td>
-              <ng-select [allowClear]="true" [items]="item.supplementFeedstuffs" [active]="item.selectedSupplementFeedstuffs" (selected)="onSelect_SupplementFeedstuff(item, $event)"
+              <ng-select [allowClear]="true" [items]="item.supplementFeedstuffs" [active]="item.selectedSupplementFeedstuffs" (selected)="model?.onSelect_SupplementFeedstuff(item, $event)"
                 placeholder="No feedstuff selected">
                 </ng-select>
             </td>
@@ -104,7 +104,7 @@
             </td>
           </tr>
         </tbody>
-        <tfoot *ngIf="formulation != null">
+        <tfoot>
           <tr>
             <th>
               Totals
@@ -112,8 +112,8 @@
             <th>
             </th>
             <th>
-              <span *ngIf="totalWeightOfSupplementFeedstuffInFormulation > 5">{{totalWeightOfSupplementFeedstuffInFormulation | number:'1.2-2'}} kg</span>
-              <span *ngIf="totalWeightOfSupplementFeedstuffInFormulation <= 5">{{totalWeightOfSupplementFeedstuffInFormulation * 1000 | number:'1.2-2'}} g</span>
+              <span *ngIf="model?.totalWeightOfSupplementFeedstuffInFormulation > 5">{{model?.totalWeightOfSupplementFeedstuffInFormulation | number:'1.2-2'}} kg</span>
+              <span *ngIf="model?.totalWeightOfSupplementFeedstuffInFormulation <= 5">{{model?.totalWeightOfSupplementFeedstuffInFormulation * 1000 | number:'1.2-2'}} g</span>
             </th>
           </tr>
         </tfoot>

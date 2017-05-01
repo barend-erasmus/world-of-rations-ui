@@ -6,7 +6,10 @@ import { Observable } from 'rxjs/Observable';
 // Imports services
 import { MainService } from './../services/main.service';
 
-// // Imports models
+// Imports models
+import { FooterViewModel } from './../view-models/footer-view-model';
+
+// Imports view models
 import { Formulation } from './../models/formulation';
 
 @Component({
@@ -15,19 +18,12 @@ import { Formulation } from './../models/formulation';
 })
 export class FooterComponent implements OnInit {
 
-  public formulations: Formulation[] = [];
+  public model: FooterViewModel;
 
   constructor(private mainService: MainService) { }
 
   public ngOnInit() {
-    this.loadFormulations();
+    this.model = new FooterViewModel(this.mainService);
   }
 
-  private loadFormulations(): void {
-    this.mainService.formulatorService.listFormulations().subscribe((listFormulationsResult: Formulation[]) => {
-      this.formulations = listFormulationsResult;
-    }, (error: Error) => {
-      console.error(error);
-    });
-  }
 }
