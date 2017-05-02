@@ -6,6 +6,7 @@ export class FormulationFeedstuff extends Feedstuff {
     public isLoading: boolean = false;
     public selectedFeedstuffName: string = null;
     public selectedFeedstuff: FormulationFeedstuff = null;
+    public errorMessage: string = null;
 
     constructor(id: string, name: string, public cost: number, public weight: number, public minimum: number, public maximum: number) {
         super(id, name);
