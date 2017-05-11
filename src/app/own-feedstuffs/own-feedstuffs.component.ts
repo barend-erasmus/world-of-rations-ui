@@ -38,6 +38,7 @@ export class OwnFeedstuffsComponent implements OnInit {
     this.mainService.feedstuffService.createUserFeedstuff(this.newFeedstuff.name, null).subscribe((result: any) => {
       window.location.href = `/ownfeedstuffedit?feedstuffId=${result.id}`;
     }, (error: Error) => {
+      console.log(error);
       this.newFeedstuff.errorMessage = 'An error has occurred while creating feedstuff';
     });
 

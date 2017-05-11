@@ -67,7 +67,7 @@ export class FeedstuffService extends BaseService {
       .map((res: Response) => {
         const obj: UserFeedstuff = res.json();
 
-        return new UserFeedstuff(obj.id, obj.name, obj.elements.map((y) => new FeedstuffElement(y.id, y.name, y.unit, y.sortOrder, y.value)));
+        return new UserFeedstuff(obj.id, obj.name, obj.elements.map((y) => new FeedstuffElement(y.id, y.name, y.unit, y.code, y.sortOrder, y.value)));
       });
   }
 
@@ -76,7 +76,7 @@ export class FeedstuffService extends BaseService {
       .map((res: Response) => {
         const obj: UserFeedstuff = res.json();
 
-        return new UserFeedstuff(obj.id, obj.name, obj.elements.map((y) => new FeedstuffElement(y.id, y.name, y.unit, y.sortOrder, y.value)));
+        return new UserFeedstuff(obj.id, obj.name, obj.elements.map((y) => new FeedstuffElement(y.id, y.name, y.unit, y.code, y.sortOrder, y.value)));
       });
   }
 
@@ -88,7 +88,7 @@ export class FeedstuffService extends BaseService {
       .map((res: Response) => {
         const obj: UserFeedstuff = res.json();
 
-        return new UserFeedstuff(obj.id, obj.name, obj.elements.map((y) => new FeedstuffElement(y.id, y.name, y.unit, y.sortOrder, y.value)));
+        return new UserFeedstuff(obj.id, obj.name, obj.elements === null? null: obj.elements.map((y) => new FeedstuffElement(y.id, y.name, y.unit, y.code, y.sortOrder, y.value)));
       });
   }
 }
