@@ -4,7 +4,7 @@ import { MainService } from './../services/main.service';
 // Imports models
 import { Formulation } from './../models/formulation';
 import { FormulationFeedstuff } from './../models/formulation-feedstuff';
-import { Element } from './../models/element';
+import { CompositionElement } from './../models/composition-element';
 
 export class FormulationViewModel {
 
@@ -39,7 +39,7 @@ export class FormulationViewModel {
             formulation.feedstuffs.sort((a: FormulationFeedstuff, b: FormulationFeedstuff) => {
                 return (b.weight < a.weight) ? -1 : 1;
             });
-            formulation.composition.sort((a: Element, b: Element) => {
+            formulation.composition.sort((a: CompositionElement, b: CompositionElement) => {
                 return (a.sortOrder < b.sortOrder) ? -1 : 1;
             });
 

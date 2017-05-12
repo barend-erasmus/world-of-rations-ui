@@ -64,20 +64,15 @@ export class FormulatorViewModel {
         this.selectedCurrencies = [selectedCurrency.id];
     }
 
-    public onSelect_Feedstuff(item: any, instance: any): void {
-        if (item.item !== null) {
-            instance.selectedFeedstuff = item.item;
-            instance.selectedFeedstuffName = item.item.name;
-        }
-
-        if (item.item !== null && this.selectedFormula !== null) {
-            instance.isLoading = true;
-            this.mainService.feedstuffService.findSuggestedValues(this.selectedFormula.id, instance.selectedFeedstuff.id).subscribe((result: any) => {
+    public onSelect_Feedstuff(item: FormulationFeedstuff): void {
+        if (item !== null && this.selectedFormula !== null) {
+            item.isLoading = true;
+            this.mainService.feedstuffService.findSuggestedValues(this.selectedFormula.id, item.id).subscribe((result: any) => {
                 if (result !== null) {
-                    instance.minimum = result.minimum;
-                    instance.maximum = result.maximum;
+                    item.minimum = result.minimum;
+                    item.maximum = result.maximum;
                 }
-                instance.isLoading = false;
+                item.isLoading = false;
 
                 this.updateFeedstuffValidationMessages();
             });
@@ -87,9 +82,7 @@ export class FormulatorViewModel {
     public onSelect_Formula(item: any): void {
         this.selectedFormula = item.item;
         for (const feedstuff of this.formulationFeedstuffs) {
-            this.onSelect_Feedstuff({
-                item: feedstuff.selectedFeedstuff,
-            }, feedstuff);
+            this.onSelect_Feedstuff(feedstuff);
         }
     }
 
@@ -125,7 +118,7 @@ export class FormulatorViewModel {
                     isValid = false;
                 }
 
-                if (feedstuff.selectedFeedstuff !== null && this.formulationFeedstuffs.filter((x) => x.selectedFeedstuff != null && x.selectedFeedstuff.id === feedstuff.selectedFeedstuff.id).length > 1) {
+                if (feedstuff.id !== null && this.formulationFeedstuffs.filter((x) => x.id != null && x.id === feedstuff.id).length > 1) {
                     this.validationMessage = 'Cannot have duplicate feedstuffs';
                     isValid = false;
                 }
@@ -139,10 +132,10 @@ export class FormulatorViewModel {
             this.validationMessage = null;
             const feedstuffs: any[] = [];
             for (const feedstuff of this.formulationFeedstuffs) {
-                if (feedstuff.selectedFeedstuff != null) {
+                if (feedstuff.id != null) {
                     feedstuffs.push({
                         cost: feedstuff.cost,
-                        id: feedstuff.selectedFeedstuff.id,
+                        id: feedstuff.id,
                         maximum: feedstuff.maximum,
                         minimum: feedstuff.minimum,
                     });
@@ -167,7 +160,7 @@ export class FormulatorViewModel {
     private updateFeedstuffValidationMessages(): void {
         for (const feedstuff of this.formulationFeedstuffs) {
             feedstuff.errorMessage = this.validateFeedstuff(feedstuff);
-            if (feedstuff.selectedFeedstuff !== null && this.formulationFeedstuffs.filter((x) => x.selectedFeedstuff !== null && x.selectedFeedstuff.id === feedstuff.selectedFeedstuff.id).length > 1) {
+            if (feedstuff.id !== null && this.formulationFeedstuffs.filter((x) => x.id !== null && x.id === feedstuff.id).length > 1) {
                 this.validationMessage = 'Cannot have duplicate feedstuffs';
             }
         }
@@ -175,7 +168,7 @@ export class FormulatorViewModel {
 
     private validateFeedstuff(item: any): string {
 
-        if (!item.selectedFeedstuff) {
+        if (!item.id) {
             return 'Please select a feedstuff';
         }
 

@@ -20,8 +20,8 @@
       </div>
       <div class="form-group">
         <label>Formula</label>
-        <input [(ngModel)]="model.selectedFormulaName" [typeahead]="model?.formulas" (typeaheadOnSelect)="model?.onSelect_Formula($event)" typeaheadOptionField="name"
-          class="form-control" />
+        <input [(ngModel)]="model.selectedFormulaName" [typeahead]="model?.formulas" (typeaheadOnSelect)="model?.onSelect_Formula($event)"
+          typeaheadOptionField="name" class="form-control" />
         <small class="form-text text-muted">search our selection of 900 formulas by typing a keyword or two.</small>
       </div>
       <div class="form-group">
@@ -54,9 +54,12 @@
       <div class="row" *ngFor="let item of model?.formulationFeedstuffs;">
         <div class="form-group">
           <div class="col-md-4">
-            <input [(ngModel)]="item.selectedFeedstuffName" (typeaheadOnSelect)="model?.onSelect_Feedstuff($event, item)" [typeahead]="model?.feedstuffs"
-              typeaheadOptionField="name" class="form-control" />
-              <p class="text-danger">{{item.errorMessage}}</p>
+            <select class="form-control" [(ngModel)]="item.id" (change)="model?.onSelect_Feedstuff(item)">
+                <option *ngFor="let feedstuff of model?.feedstuffs" [ngValue]="feedstuff.id">  
+                    {{feedstuff.name}}
+                </option>
+            </select>
+            <p class="text-danger">{{item.errorMessage}}</p>
           </div>
           <div class="col-md-2">
             <input class="form-control" [(ngModel)]="item.minimum" type="text" />
@@ -88,7 +91,8 @@
         <div class="col-md-12">
           <div class="alert alert-success">
             <p>
-              We have successfully formulated a least-cost ration that meets the NRC's nutrient requirements for the above ration with a total cost of <b>{{model?.formulatorResult.cost | currency: model?.formulatorResult.currencyCode :true}} per tonne</b>.
+              We have successfully formulated a least-cost ration that meets the NRC's nutrient requirements for the above ration with
+              a total cost of <b>{{model?.formulatorResult.cost | currency: model?.formulatorResult.currencyCode :true}} per tonne</b>.
             </p>
             <br />
             <p>
