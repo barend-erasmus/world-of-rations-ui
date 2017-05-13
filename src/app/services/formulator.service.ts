@@ -41,7 +41,7 @@ export class FormulatorService extends BaseService {
       .map((res: Response) => {
         const obj: Formulation = res.json();
 
-        return new Formulation(
+        const formulation = new Formulation(
           obj.id,
           obj.feasible,
           obj.currencyCode,
@@ -49,8 +49,16 @@ export class FormulatorService extends BaseService {
           obj.feedstuffs.map((x) => new FormulationFeedstuff(x.id, x.name, x.cost, x.weight, x.minimum, x.maximum)),
           new Formula(obj.formula.id, obj.formula.name),
           obj.composition.map((x) => new CompositionElement(x.id, x.name, x.unit, x.status, x.value, x.sortOrder)),
-          obj.supplementElements.map((x) => new SupplementElement(x.id, x.name, x.unit, x.sortOrder, x.selectedSupplementFeedstuffs.map((y) => new SupplementFeedstuff(y.id, y.text, y.weight)), x.supplementFeedstuffs.map((y) => new SupplementFeedstuff(y.id, y.text, y.weight)))));
+          obj.supplementElements.map((x) => this.mapSupplementElement(x)));
+
+        return formulation;
+
       });
+  }
+
+  private mapSupplementElement(x): SupplementElement {
+    const supplementFeedstuffs = x.supplementFeedstuffs.map((y) => new SupplementFeedstuff(y.id, y.text, y.weight));
+    return new SupplementElement(x.id, x.name, x.unit, x.sortOrder, supplementFeedstuffs[0], supplementFeedstuffs);
   }
 
   public listFormulations(): Observable<Formulation[]> {

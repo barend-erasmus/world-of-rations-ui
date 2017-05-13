@@ -20,17 +20,7 @@ export class FormulationViewModel {
         this.loadFormulation();
     }
 
-    public onSelect_SupplementFeedstuff(supplementElement, selectedSupplementFeedstuff): void {
-        if (supplementElement === null || selectedSupplementFeedstuff === null || supplementElement.supplementFeedstuffs === null) {
-            return;
-        }
-
-        for (const supplmentFeedstuff of supplementElement.supplementFeedstuffs) {
-            if (supplmentFeedstuff.id === selectedSupplementFeedstuff.id) {
-                supplementElement.selectedSupplementFeedstuffs = [supplmentFeedstuff];
-            }
-        }
-
+    public onSelect_SupplementFeedstuff(): void {
         this.updateTotals();
     }
 
@@ -67,6 +57,6 @@ export class FormulationViewModel {
     }
 
     private getTotalWeightOfSupplementFeedstuffInFormulation(): number {
-        return this.formulation.supplementElements.map((x) => x.selectedSupplementFeedstuffs[0] === undefined ? 0 : x.selectedSupplementFeedstuffs[0].weight).reduce((a, b) => a + b, 0);
+        return this.formulation.supplementElements.map((x) => x.selectedSupplementFeedstuff === undefined ? 0 : x.selectedSupplementFeedstuff.weight).reduce((a, b) => a + b, 0);
     }
 }

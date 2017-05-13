@@ -94,13 +94,15 @@
               {{item.name}}
             </td>
             <td>
-              <ng-select [allowClear]="true" [items]="item.supplementFeedstuffs" [active]="item.selectedSupplementFeedstuffs" (selected)="model?.onSelect_SupplementFeedstuff(item, $event)"
-                placeholder="No feedstuff selected">
-                </ng-select>
+              <select class="form-control" [(ngModel)]="item.selectedSupplementFeedstuff" (change)="model?.onSelect_SupplementFeedstuff()">
+                <option *ngFor="let feedstuff of item.supplementFeedstuffs" [ngValue]="feedstuff">  
+                    {{feedstuff.text}}
+                </option>
+              </select>
             </td>
-            <td *ngIf="item.selectedSupplementFeedstuffs != null && item.selectedSupplementFeedstuffs.length > 0">
-              <span *ngIf="item.selectedSupplementFeedstuffs[0].weight > 5">{{item.selectedSupplementFeedstuffs[0].weight | number:'1.2-2'}} kg</span>
-              <span *ngIf="item.selectedSupplementFeedstuffs[0].weight <= 5">{{item.selectedSupplementFeedstuffs[0].weight * 1000 | number:'1.2-2'}} g</span>
+            <td *ngIf="item.selectedSupplementFeedstuff != null">
+              <span *ngIf="item.selectedSupplementFeedstuff.weight > 5">{{item.selectedSupplementFeedstuff.weight | number:'1.2-2'}} kg</span>
+              <span *ngIf="item.selectedSupplementFeedstuff.weight <= 5">{{item.selectedSupplementFeedstuff.weight * 1000 | number:'1.2-2'}} g</span>
             </td>
           </tr>
         </tbody>
