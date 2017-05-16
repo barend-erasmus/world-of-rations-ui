@@ -1,5 +1,6 @@
 // Imports
 import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/observable/of';
 import { Observable } from 'rxjs/Observable';
 
@@ -20,10 +21,10 @@ export class FooterComponent implements OnInit {
 
   public model: FooterViewModel;
 
-  constructor(private mainService: MainService) { }
+  constructor(private http: Http, private mainService: MainService) { }
 
   public ngOnInit() {
-    this.model = new FooterViewModel(this.mainService);
+    this.model = new FooterViewModel(this.http, this.mainService);
   }
 
 }
