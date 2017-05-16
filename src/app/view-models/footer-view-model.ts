@@ -20,6 +20,7 @@ export class FooterViewModel {
     public decodedToken: any;
 
     constructor(private http: Http, private mainService: MainService) {
+        this.validateJWT();
         this.loadFormulations();
     }
 
