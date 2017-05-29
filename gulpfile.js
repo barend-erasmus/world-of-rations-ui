@@ -75,7 +75,7 @@ gulp.task('docker:build', function (done) {
         password: argv.password
     }).then(function () {
         ssh.execCommand(`docker build --no-cache -t ${argv.service} /docker-uploads/${argv.service}`).then(function (result) {
-            return ssh.execCommand(`docker run -d -p 9090:4200 -v /opt/world-of-rations-ui:/usr/share/nginx/html --name ${argv.service} -t ${argv.service}`);
+            return ssh.execCommand(`docker run -d -p 9090:4200 -v /opt/${argv.service}:/usr/share/nginx/html --name ${argv.service} -t ${argv.service}`);
         }).then(function (result) {
             ssh.dispose();
             done();
