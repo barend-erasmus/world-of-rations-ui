@@ -1,0 +1,25 @@
+{
+    "machine": {
+        "host": "$host",
+        "username": "$username",
+        "password": "$password"
+    },
+    "commands": [
+        "docker stop world-of-rations-ui",
+        "docker rm world-of-rations-ui",
+        "docker build --no-cache -t world-of-rations-ui /docker-uploads/world-of-rations-ui",
+        "docker run -d -p 9090:4200 -v /opt/world-of-rations-ui:/usr/share/nginx/html --name world-of-rations-ui -t world-of-rations-ui"
+    ],
+    "directories": [
+        {
+            "source": "$workspace/dist",
+            "destination": "/opt/world-of-rations-ui"
+        }
+    ],
+    "files": [
+        {
+            "source": "$workspace/Dockerfile",
+            "destination": "/docker-uploads/world-of-rations-ui/Dockerfile"
+        }
+    ]
+}
