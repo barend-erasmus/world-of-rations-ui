@@ -20,6 +20,10 @@
         {
             "source": "$workspace/Dockerfile",
             "destination": "/docker-uploads/world-of-rations-ui/Dockerfile"
+        },
+        {
+            "source": "$workspace/nginx.conf",
+            "destination": "/docker-uploads/world-of-rations-ui/nginx.conf"
         }
     ]
 }
