@@ -33,7 +33,7 @@ export class FormulationViewModel {
                 return (a.sortOrder < b.sortOrder) ? -1 : 1;
             });
 
-            formulation.feedstuffs = formulation.feedstuffs.filter((x) => x.weight !== 0);
+            formulation.feedstuffs = formulation.feedstuffs;
 
             this.formulation = formulation;
             this.updateTotals();
