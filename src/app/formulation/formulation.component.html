@@ -29,9 +29,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of model.formulation.feedstuffs;">
-            <td *ngIf="item.weight != null">{{item.name}}</td>
-            <td *ngIf="item.weight != null">{{item.weight | number:'1.2-2'}} kg</td>
-            <td *ngIf="item.weight != null">{{item.cost | currency: model?.formulation.currencyCode :true}} per tonne</td>
+            <td *ngIf="item.weight != null && item.weight != 0">{{item.name}}</td>
+            <td *ngIf="item.weight != null && item.weight != 0">{{item.weight | number:'1.2-2'}} kg</td>
+            <td *ngIf="item.weight != null && item.weight != 0">{{item.cost | currency: model?.formulation.currencyCode :true}} per tonne</td>
           </tr>
         </tbody>
         <tfoot>
