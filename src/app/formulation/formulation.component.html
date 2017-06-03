@@ -7,8 +7,8 @@
       <br />
       <p>The following results are computed by using the data supplied to the formulator.</p>
       <p>
-        The {{model?.formulation.feedstuffs.length}} feedstuff(s) supplied to the formulator was used in conjunction with the 
-        nutrient values for <b>{{model?.formulation.formula.name}}</b> to compute a least-cost ration.
+        The {{model?.formulation.feedstuffs.length}} feedstuff(s) supplied to the formulator was used in conjunction with the nutrient
+        values for <b>{{model?.formulation.formula.name}}</b> to compute a least-cost ration.
       </p>
     </div>
     <div class="row feature_wrapper">
@@ -40,10 +40,10 @@
               Totals
             </th>
             <th>
-              {{model?.totalWeightOfFeedstuffInFormulation}} kg
+              1000 kg
             </th>
             <th>
-              {{model?.totalCostOfFeedstuffInFormulation | currency: model?.formulation.currencyCode :true}}
+              {{model?.formulation.cost | currency: model?.formulation.currencyCode :true}}
             </th>
           </tr>
         </tfoot>
@@ -94,31 +94,21 @@
               {{item.name}}
             </td>
             <td>
-              <select class="form-control" [(ngModel)]="item.selectedSupplementFeedstuff" (change)="model?.onSelect_SupplementFeedstuff()">
-                <option *ngFor="let feedstuff of item.supplementFeedstuffs" [ngValue]="feedstuff">  
-                    {{feedstuff.text}}
-                </option>
-              </select>
+              <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">{{supplementFeestuff.text}}</p>
             </td>
-            <td *ngIf="item.selectedSupplementFeedstuff != null">
-              <span *ngIf="item.selectedSupplementFeedstuff.weight > 5">{{item.selectedSupplementFeedstuff.weight | number:'1.2-2'}} kg</span>
-              <span *ngIf="item.selectedSupplementFeedstuff.weight <= 5">{{item.selectedSupplementFeedstuff.weight * 1000 | number:'1.2-2'}} g</span>
+            <td>
+              <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
+                <span *ngIf="supplementFeestuff.weight > 5">{{supplementFeestuff.weight | number:'1.2-2'}} kg</span>
+              </p>
+              <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
+                <span *ngIf="supplementFeestuff.weight <= 5 && supplementFeestuff.weight > 1">{{supplementFeestuff.weight | number:'1.2-2'}} g</span>
+              </p>
+              <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
+                <span *ngIf="supplementFeestuff.weight <= 1">{{supplementFeestuff.weight | number:'1.2-8'}} g</span>
+              </p>
             </td>
           </tr>
         </tbody>
-        <tfoot>
-          <tr>
-            <th>
-              Totals
-            </th>
-            <th>
-            </th>
-            <th>
-              <span *ngIf="model?.totalWeightOfSupplementFeedstuffInFormulation > 5">{{model?.totalWeightOfSupplementFeedstuffInFormulation | number:'1.2-2'}} kg</span>
-              <span *ngIf="model?.totalWeightOfSupplementFeedstuffInFormulation <= 5">{{model?.totalWeightOfSupplementFeedstuffInFormulation * 1000 | number:'1.2-2'}} g</span>
-            </th>
-          </tr>
-        </tfoot>
       </table>
     </div>
   </div>

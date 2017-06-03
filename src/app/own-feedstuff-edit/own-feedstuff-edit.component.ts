@@ -11,7 +11,6 @@ import { MainService } from '../services/main.service';
 export class OwnFeedstuffEditComponent implements OnInit {
 
   public feedstuff: any = null;
-  public elements: any[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private mainService: MainService) { }
 
@@ -21,9 +20,6 @@ export class OwnFeedstuffEditComponent implements OnInit {
       this.mainService.feedstuffService.findUserFeedstuff(feedstuffId).subscribe((getFeedstuffResult: any) => {
         this.feedstuff = getFeedstuffResult;
         this.feedstuff.id = feedstuffId;
-
-        this.elements = this.feedstuff.elements;
-
       });
     });
   }

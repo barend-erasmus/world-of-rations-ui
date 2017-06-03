@@ -31,7 +31,6 @@ export class FormulatorService extends BaseService {
     return this.post(environment.api.uri + '/api/formulator/formulate', requestObj)
       .map((res: Response) => {
         const obj: FormulationResult = res.json();
-
         return new FormulationResult(obj.id, obj.feasible, obj.currencyCode, obj.cost);
       });
   }
@@ -40,33 +39,15 @@ export class FormulatorService extends BaseService {
     return this.get(environment.api.uri + '/api/formulator/findFormulation?formulationId=' + formulationId)
       .map((res: Response) => {
         const obj: Formulation = res.json();
-
-        const formulation = new Formulation(
-          obj.id,
-          obj.feasible,
-          obj.currencyCode,
-          obj.cost,
-          obj.feedstuffs.map((x) => new FormulationFeedstuff(x.id, x.name, x.cost, x.weight, x.minimum, x.maximum)),
-          new Formula(obj.formula.id, obj.formula.name),
-          obj.composition.map((x) => new CompositionElement(x.id, x.name, x.unit, x.status, x.value, x.sortOrder)),
-          obj.supplementElements.map((x) => this.mapSupplementElement(x)));
-
-        return formulation;
-
+        return Formulation.mapFormulation(obj);
       });
-  }
-
-  private mapSupplementElement(x): SupplementElement {
-    const supplementFeedstuffs = x.supplementFeedstuffs.map((y) => new SupplementFeedstuff(y.id, y.text, y.weight));
-    return new SupplementElement(x.id, x.name, x.unit, x.sortOrder, supplementFeedstuffs[0], supplementFeedstuffs);
   }
 
   public listFormulations(): Observable<Formulation[]> {
     return this.get(environment.api.uri + '/api/formulator/listFormulations')
       .map((res: Response) => {
         const obj: Formulation[] = res.json();
-
-        return obj.map((x) => new Formulation(x.id, x.feasible, x.currencyCode, x.cost, null, new Formula(x.formula.id, x.formula.name), null, null));
+        return obj.map((x) => Formulation.mapFormulation(x));
       });
   }
 

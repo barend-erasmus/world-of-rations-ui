@@ -1,5 +1,6 @@
 // Imports
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TreeComponent } from 'angular-tree-component'
 
 // imports services
 import { MainService } from '../services/main.service';

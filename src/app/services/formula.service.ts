@@ -22,11 +22,10 @@ export class FormulaService extends BaseService {
    }
 
   public listFormulas(): Observable<Formula[]>  {
-    return this.get(environment.api.uri + '/api/formula/listFormula')
+    return this.get(environment.api.uri + '/api/formula/listFormulas')
       .map((res: Response) => {
         const obj: Formula[] = res.json();
-
-        return obj.map((x) => new Formula(x.id, x.name));
+        return obj.map((x) => Formula.mapFormula(x));
       });
   }
 

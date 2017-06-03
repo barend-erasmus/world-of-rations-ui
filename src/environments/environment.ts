@@ -5,7 +5,7 @@
 
 export const environment = {
     api: {
-        uri: 'http://localhost:8083',
+        uri: 'http://localhost:3000',
     },
     production: false,
 };

@@ -11,17 +11,19 @@
       </p>
     </div>
     <div class="row feature_wrapper">
-      <p class="text-danger">{{model?.validationMessage}}</p>
+      <p class="text-danger" *ngFor="let message of model?.validationMessages">{{message}}</p>
       <div class="form-group">
         <label>Currency</label>
-        <ng-select [items]="model?.currencies" [active]="model?.selectedCurrencies" (selected)="model?.onSelect_Currency($event)">
-        </ng-select>
+        <select class="form-control" [(ngModel)]="model?.formulation.currencyCode">
+                <option *ngFor="let currencyCode of model?.currencies" [ngValue]="currencyCode">  
+                    {{currencyCode}}
+                </option>
+        </select>
         <small class="form-text text-muted">select your preferred currency.</small>
       </div>
       <div class="form-group">
         <label>Formula</label>
-        <input [(ngModel)]="model.selectedFormulaName" [typeahead]="model?.formulas" (typeaheadOnSelect)="model?.onSelect_Formula($event)"
-          typeaheadOptionField="name" class="form-control" />
+        <tree-root #tree [nodes]="model?.treeNodes" (activate)="model?.onSelect_Formula($event)"></tree-root>
         <small class="form-text text-muted">search our selection of 900 formulas by typing a keyword or two.</small>
       </div>
       <div class="form-group">
@@ -44,14 +46,14 @@
             Maximum (kg)
           </div>
           <div class="col-md-2 text-center">
-            Cost ({{model?.selectedCurrencies.length == 0? 'USD' : model?.selectedCurrencies[0]}} per tonne)
+            Cost ({{model?.formulation.currencyCode}} per tonne)
           </div>
           <div class="col-md-2 text-center">
             Actions
           </div>
         </div>
       </div>
-      <div class="row" *ngFor="let item of model?.formulationFeedstuffs;">
+      <div class="row" *ngFor="let item of model?.formulation.feedstuffs;">
         <div class="form-group">
           <div class="col-md-4">
             <select class="form-control" [(ngModel)]="item.id" (change)="model?.onSelect_Feedstuff(item)">
@@ -59,7 +61,6 @@
                     {{feedstuff.name}}
                 </option>
             </select>
-            <p class="text-danger">{{item.errorMessage}}</p>
           </div>
           <div class="col-md-2">
             <input class="form-control" [(ngModel)]="item.minimum" type="text" />
@@ -80,7 +81,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <p class="text-danger">{{model?.validationMessage}}</p>
+          <p class="text-danger" *ngFor="let message of model?.validationMessages">{{message}}</p>
           <button class="btn btn-success pull-right" (click)="model?.onClick_Formulate()" [disabled]="model?.isFormulating"><i class="fa fa-calculator" *ngIf="!model?.isFormulating"></i><i class="fa fa-refresh fa-spin" *ngIf="model?.isFormulating"></i>&nbsp;Formulate</button>
           <button class="btn btn-primary pull-right padded" (click)="model?.onClick_AddFeedstuff()"><i class="fa fa-plus"></i>&nbsp;Add Feedstuff</button>
         </div>
