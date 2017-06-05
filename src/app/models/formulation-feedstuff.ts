@@ -10,7 +10,7 @@ export class FormulationFeedstuff extends Feedstuff {
         return new FormulationFeedstuff(feedstuff.id, feedstuff.name, feedstuff.group, feedstuff.elements, feedstuff.username, obj.cost, obj.minimum, obj.maximum, obj.weight);
     }
 
-    public isLoading = false;
+    public isLoading: boolean = false;
 
     constructor(
         id: string,

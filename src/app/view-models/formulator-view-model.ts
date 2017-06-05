@@ -9,12 +9,14 @@ import { Feedstuff } from './../models/feedstuff';
 import { FormulationFeedstuff } from './../models/formulation-feedstuff';
 import { Formulation } from './../models/formulation';
 import { Formula } from './../models/formula';
+import { TreeNode } from './../models/tree-node';
 import { FormulationResult } from './../models/formulation-result';
 
 export class FormulatorViewModel {
-    public treeNodes: any;
-    public formulas: Formula[] = [];
+    public formulaTreeNodes: TreeNode[];
+
     public feedstuffs: Feedstuff[] = [];
+    public feedstuffTreeNodes: TreeNode[] = [];
 
     public validationMessages: string[] = [];
 
@@ -33,37 +35,8 @@ export class FormulatorViewModel {
     }
 
     private loadFormulaList(): void {
-        this.mainService.formulaService.listFormulas().subscribe((result: any[]) => {
-            this.formulas = result;
-
-            const nodes: any[] = [];
-
-            for (const f of this.formulas) {
-                let ns = nodes;
-                for (let i = 0; i < f.getNumberOfFormulaGroups() - 1; i++) {
-                    let g = f.getFormulaGroup(i);
-                    let n = ns.find((x) => x.id === g.id);
-
-                    if (!n) {
-                        ns.push({
-                            id: g.id,
-                            name: g.name,
-                            children: []
-                        });
-                        n = ns.find((x) => x.id === g.id);
-                    }
-
-                    ns = n.children;
-                }
-
-                ns.push({
-                    id: f.id,
-                    name: f.name
-                });
-            }
-
-            this.treeNodes = nodes;
-
+        this.mainService.formulaService.listFormulaTreeNodes().subscribe((result: TreeNode[]) => {
+            this.formulaTreeNodes = result;
         }, (error: Error) => {
             console.error(error);
         });
@@ -183,6 +156,26 @@ export class FormulatorViewModel {
     private loadFeedstuffList(): void {
         this.mainService.feedstuffService.listFeedstuffs().subscribe((result: Feedstuff[]) => {
             this.feedstuffs = result;
+            
+            for (const feedstuff of this.feedstuffs) {
+                let n: TreeNode = feedstuff.group === null? this.feedstuffTreeNodes.find((x) => x.id === 'user') : this.feedstuffTreeNodes.find((x) => x.id === feedstuff.group.id);
+                
+                if (!n) {
+                    n = new TreeNode(
+                        feedstuff.group === null? 'user' : feedstuff.group.id,
+                        feedstuff.group === null? 'User' : feedstuff.group.name,
+                        [
+                            new TreeNode(feedstuff.id, feedstuff.name, null)
+                        ]
+                    );
+
+                    this.feedstuffTreeNodes.push(n);
+                }
+                else {
+                    n.children.push(new TreeNode(feedstuff.id, feedstuff.name, null));
+                }
+                
+            }
         }, (error: Error) => {
             console.error(error);
         });

@@ -17,28 +17,4 @@ export class Formula {
     ) {
 
     }
-
-    public getFormulaGroup(level: number): FormulaGroup {
-        const groups: FormulaGroup[] = [];
-
-        let group = this.group;
-        while(group !== null) {
-            groups.push(group);
-            group = group.parent;
-        }
-
-        return groups[groups.length - level - 1];
-    }
-
-    public getNumberOfFormulaGroups(): number {
-        const groups: FormulaGroup[] = [];
-
-        let group = this.group;
-        while(group !== null) {
-            groups.push(group);
-            group = group.parent;
-        }
-
-        return groups.length;
-    }
 }

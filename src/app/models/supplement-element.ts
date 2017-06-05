@@ -5,11 +5,10 @@ export class SupplementElement {
 
     public static mapSupplementElement(obj: any): SupplementElement {
         const result = new SupplementElement(obj.id, obj.name, obj.unit, obj.sortOrder);
-        result.selectedSupplementFeedstuffId = obj.selectedSupplementFeedstuffId;
-        result.selectedSupplementFeedstuffWeight = obj.selectedSupplementFeedstuffWeight;
         result.supplementFeedstuffs = obj.supplementFeedstuffs.map((x) => SupplementFeedstuff.mapSupplementFeedstuff(x));
         return result;
     }
+
 
     public selectedSupplementFeedstuffId: string;
     public selectedSupplementFeedstuffWeight: number;
