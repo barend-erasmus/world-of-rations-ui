@@ -34,14 +34,6 @@ export class FormulatorViewModel {
         this.onClick_ResetToDefaults();
     }
 
-    private loadFormulaList(): void {
-        this.mainService.formulaService.listFormulaTreeNodes().subscribe((result: TreeNode[]) => {
-            this.formulaTreeNodes = result;
-        }, (error: Error) => {
-            console.error(error);
-        });
-    }
-
     public onSelect_Currency(selectedCurrency: string): void {
         this.formulation.currencyCode = selectedCurrency;
     }
@@ -137,7 +129,7 @@ export class FormulatorViewModel {
 
         for (const feedstuff of this.formulation.feedstuffs) {
             if (feedstuff.id !== null && this.formulation.feedstuffs.filter((x) => x.id != null && x.id === feedstuff.id).length > 1) {
-                const f = this.feedstuffs.find((x => x.id === feedstuff.id));
+                const f = this.feedstuffs.find(((x) => x.id === feedstuff.id));
                 this.validationMessages.push(`${f.name} cannot appear twice in the feedstuffs list`);
             }
         }
@@ -188,4 +180,11 @@ export class FormulatorViewModel {
         ];
     }
 
+    private loadFormulaList(): void {
+        this.mainService.formulaService.listFormulaTreeNodes().subscribe((result: TreeNode[]) => {
+            this.formulaTreeNodes = result;
+        }, (error: Error) => {
+            console.error(error);
+        });
+    }
 }

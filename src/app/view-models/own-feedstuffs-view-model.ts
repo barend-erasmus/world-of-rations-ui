@@ -19,14 +19,6 @@ export class OwnFeedstuffsViewModel {
         this.loadFeedstuffs();
     }
 
-    private loadFeedstuffs(): void {
-        this.mainService.feedstuffService.listUserFeedstuffs().subscribe((result: any[]) => {
-            this.feedstuffs = result;
-        }, (error: Error) => {
-            this.validationMessages.push('An error has occurred while loading feedstuff');
-        });
-    }
-
     public onClick_CreateFeedstuff(): void {
 
         if (this.newFeedstuff.name === null) {
@@ -45,5 +37,13 @@ export class OwnFeedstuffsViewModel {
 
     public onClick_EditFeedstuff(item: Feedstuff): void {
         window.location.href = `/ownfeedstuffedit?feedstuffId=${item.id}`;
+    }
+
+    private loadFeedstuffs(): void {
+        this.mainService.feedstuffService.listUserFeedstuffs().subscribe((result: any[]) => {
+            this.feedstuffs = result;
+        }, (error: Error) => {
+            this.validationMessages.push('An error has occurred while loading feedstuff');
+        });
     }
 }

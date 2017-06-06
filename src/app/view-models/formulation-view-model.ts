@@ -37,6 +37,4 @@ export class FormulationViewModel {
             this.isActive = true;
         });
     }
-
-    
 }
