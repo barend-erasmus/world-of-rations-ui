@@ -20,11 +20,8 @@ export class FormulatorComponent implements OnInit {
 
   constructor(private mainService: MainService) { }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
 
     this.model = new FormulatorViewModel(this.mainService);
   }
-
-
-
 }

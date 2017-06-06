@@ -11,7 +11,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute) { }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(this.subscribeToActivatedRouteQueryParams);
   }
 

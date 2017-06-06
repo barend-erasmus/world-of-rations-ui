@@ -20,7 +20,7 @@ export class FormulationViewModel {
         this.loadFormulation();
     }
 
-    private loadFormulation() {
+    private loadFormulation(): void {
         this.mainService.formulatorService.findFormulation(this.formulationId).subscribe((formulation: Formulation): void => {
             formulation.feedstuffs.sort((a: FormulationFeedstuff, b: FormulationFeedstuff) => {
                 return (b.weight < a.weight) ? -1 : 1;

@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private http: Http) { }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.validateJWT();
   }
 

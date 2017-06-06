@@ -23,7 +23,7 @@ export class FooterComponent implements OnInit {
 
   constructor(private http: Http, private mainService: MainService) { }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.model = new FooterViewModel(this.http, this.mainService);
   }
 

@@ -29,24 +29,6 @@ export class OwnFeedstuffsComponent implements OnInit {
     });
   }
 
-  public onClick_CreateFeedstuff() {
-
-    if (this.newFeedstuff.name === null) {
-      this.newFeedstuff.errorMessage = 'Please enter a name';
-      return;
-    }
-    this.mainService.feedstuffService.createUserFeedstuff(this.newFeedstuff.name, null).subscribe((result: any) => {
-      window.location.href = `/ownfeedstuffedit?feedstuffId=${result.id}`;
-    }, (error: Error) => {
-      console.log(error);
-      this.newFeedstuff.errorMessage = 'An error has occurred while creating feedstuff';
-    });
-
-    this.newFeedstuff.name = null;
-  }
-
-  public onClick_EditFeedstuff(item: any) {
-    window.location.href = `/ownfeedstuffedit?feedstuffId=${item.id}`;
-  }
+  
 
 }
