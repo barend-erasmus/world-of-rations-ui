@@ -28,7 +28,6 @@ export class OwnFeedstuffsViewModel {
         this.mainService.feedstuffService.createUserFeedstuff(this.newFeedstuff.name, null).subscribe((result: any) => {
             window.location.href = `/ownfeedstuffedit?feedstuffId=${result.id}`;
         }, (error: Error) => {
-            console.log(error);
             this.validationMessages.push('An error has occurred while creating feedstuff');
         });
 
