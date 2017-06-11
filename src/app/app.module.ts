@@ -8,10 +8,7 @@ import { RouterModule, UrlSerializer } from '@angular/router';
 import { LowerCaseUrlSerializer } from './lower-case-url-serializer';
 
 // Imports plugins
-import { TypeaheadModule } from 'ng2-bootstrap';
-import { PositioningService } from 'ng2-bootstrap';
-import { ComponentLoaderFactory } from 'ng2-bootstrap/component-loader';
-import { SelectModule } from 'ng2-select';
+import { TreeModule } from 'angular-tree-component';
 
 // Imports components
 import { AboutComponent } from './about/about.component';
@@ -93,16 +90,13 @@ const router = RouterModule.forRoot([
     FormsModule,
     HttpModule,
     router,
-    SelectModule,
-    TypeaheadModule,
+    TreeModule
   ],
   providers: [
     MainService,
     FeedstuffService,
     FormulaService,
     FormulatorService,
-    ComponentLoaderFactory,
-    PositioningService,
     {
       provide: UrlSerializer,
       useClass: LowerCaseUrlSerializer,

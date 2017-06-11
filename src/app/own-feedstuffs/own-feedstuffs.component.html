@@ -9,7 +9,7 @@
       </p>
     </div>
     <div class="row feature_wrapper">
-      <p class="text-danger">{{errorMessage}}</p>
+      <p class="text-danger" *ngFor="let message of model?.validationMessages">{{message}}</p>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -21,19 +21,18 @@
         <tbody>
           <tr>
             <td>
-              <input class="form-control" [(ngModel)]="newFeedstuff.name" />
-              <p class="text-danger">{{newFeedstuff.errorMessage}}</p>
+              <input class="form-control" [(ngModel)]="model?.newFeedstuff.name" />
             </td>
-            <td>{{currentTimestamp | date: 'dd MMMM yyyy'}}</td>
+            <td>{{model?.currentTimestamp | date: 'dd MMMM yyyy'}}</td>
             <td>
-              <button class="btn btn-success" (click)="onClick_CreateFeedstuff()"><i class="fa fa-plus"></i>&nbsp;Create</button>
+              <button class="btn btn-success" (click)="model?.onClick_CreateFeedstuff()"><i class="fa fa-plus"></i>&nbsp;Create</button>
             </td>
           </tr>
-          <tr *ngFor="let item of feedstuffs">
+          <tr *ngFor="let item of model?.feedstuffs">
             <td>{{item.name}}</td>
             <td>N/A</td>
             <td>
-              <button class="btn btn-warning" (click)="onClick_EditFeedstuff(item)"><i class="fa fa-edit"></i>&nbsp;Edit</button>
+              <button class="btn btn-warning" (click)="model?.onClick_EditFeedstuff(item)"><i class="fa fa-edit"></i>&nbsp;Edit</button>
             </td>
           </tr>
         </tbody>

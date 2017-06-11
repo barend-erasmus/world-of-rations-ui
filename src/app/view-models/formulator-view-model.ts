@@ -7,26 +7,24 @@ import { MainService } from './../services/main.service';
 // Imports models
 import { Feedstuff } from './../models/feedstuff';
 import { FormulationFeedstuff } from './../models/formulation-feedstuff';
+import { Formulation } from './../models/formulation';
 import { Formula } from './../models/formula';
+import { TreeNode } from './../models/tree-node';
 import { FormulationResult } from './../models/formulation-result';
 
 export class FormulatorViewModel {
-
-    public formulas: Formula[] = [];
-    public formulasDataSource: Observable<any> = null;
-    public selectedFormulaName: string;
-    public selectedFormula: Formula = null;
-
-    public validationMessage: string = null;
+    public formulaTreeNodes: TreeNode[];
 
     public feedstuffs: Feedstuff[] = [];
+    public feedstuffTreeNodes: TreeNode[] = [];
+
+    public validationMessages: string[] = [];
 
     public currencies: string[] = [];
-    public selectedCurrencies: string[];
 
     public isFormulating: boolean = false;
 
-    public formulationFeedstuffs: FormulationFeedstuff[] = [];
+    public formulation: Formulation = new Formulation(null, null, null, 'ZAR', null, null, null, null, null, null, null);
     public formulatorResult: FormulationResult = null;
 
     constructor(private mainService: MainService) {
@@ -36,67 +34,45 @@ export class FormulatorViewModel {
         this.onClick_ResetToDefaults();
     }
 
-    public queryFormulaList(token: string): Observable<Formula[]> {
-
-        return Observable.of(
-            this.formulas.filter((item: Formula) => {
-                const isValid = false;
-
-                const splittedName = item.name.split(' ');
-                const splittedToken = token.split(' ');
-
-                for (const splittedTokenItem of splittedToken) {
-                    if (splittedTokenItem === null || splittedTokenItem === '') {
-                        return false;
-                    }
-                    const query = new RegExp(splittedTokenItem, 'ig');
-                    if (query.test(item.name)) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }),
-        );
-    }
-
-    public onSelect_Currency(selectedCurrency): void {
-        this.selectedCurrencies = [selectedCurrency.id];
+    public onSelect_Currency(selectedCurrency: string): void {
+        this.formulation.currencyCode = selectedCurrency;
     }
 
     public onSelect_Feedstuff(item: FormulationFeedstuff): void {
-        if (item !== null && this.selectedFormula !== null) {
+        if (item && this.formulation.formula) {
             item.isLoading = true;
-            this.mainService.feedstuffService.findSuggestedValues(this.selectedFormula.id, item.id).subscribe((result: any) => {
+            this.mainService.feedstuffService.findSuggestedValues(this.formulation.formula.id, item.id).subscribe((result: any) => {
                 if (result !== null) {
                     item.minimum = result.minimum;
                     item.maximum = result.maximum;
                 }
                 item.isLoading = false;
 
-                this.updateFeedstuffValidationMessages();
+                this.validateFormulation();
             });
         }
     }
 
-    public onSelect_Formula(item: any): void {
-        this.selectedFormula = item.item;
-        for (const feedstuff of this.formulationFeedstuffs) {
-            this.onSelect_Feedstuff(feedstuff);
+    public onSelect_Formula(event: any): void {
+        if (event.node.data.children === undefined) {
+            this.formulation.formula = new Formula(event.node.data.id, event.node.data.name, null, null, null);
+            for (const feedstuff of this.formulation.feedstuffs) {
+                this.onSelect_Feedstuff(feedstuff);
+            }
         }
     }
 
     public onClick_AddFeedstuff(): void {
-        this.formulationFeedstuffs.push(new FormulationFeedstuff(null, null, null, null, 0, 1000));
+        this.formulation.feedstuffs.push(new FormulationFeedstuff(null, null, null, null, null, null, 0, 1000, null));
     }
 
-    public onClick_RemoveFeedstuff(item: any): void {
-        this.formulationFeedstuffs.splice(this.formulationFeedstuffs.indexOf(item), 1);
+    public onClick_RemoveFeedstuff(item: FormulationFeedstuff): void {
+        this.formulation.feedstuffs.splice(this.formulation.feedstuffs.indexOf(item), 1);
     }
 
     public onClick_ResetToDefaults(): void {
-        this.mainService.feedstuffService.listExampleFeedstuffs().subscribe((result: any[]) => {
-            this.formulationFeedstuffs = result;
+        this.mainService.feedstuffService.listExampleFeedstuffs().subscribe((result: FormulationFeedstuff[]) => {
+            this.formulation.feedstuffs = result;
         }, (error: Error) => {
             console.error(error);
         });
@@ -104,111 +80,94 @@ export class FormulatorViewModel {
 
     public onClick_Formulate(): void {
         this.formulatorResult = null;
-        if (this.selectedFormula === null) {
-            this.validationMessage = 'Please select a formula';
-        } else {
 
-            let isValid = true;
-
-            this.updateFeedstuffValidationMessages();
-
-            for (const feedstuff of this.formulationFeedstuffs) {
-
-                if (feedstuff.errorMessage !== null) {
-                    isValid = false;
-                }
-
-                if (feedstuff.id !== null && this.formulationFeedstuffs.filter((x) => x.id != null && x.id === feedstuff.id).length > 1) {
-                    this.validationMessage = 'Cannot have duplicate feedstuffs';
-                    isValid = false;
-                }
-            }
-
-            if (!isValid) {
-                return;
-            }
-
-            this.isFormulating = true;
-            this.validationMessage = null;
-            const feedstuffs: any[] = [];
-            for (const feedstuff of this.formulationFeedstuffs) {
-                if (feedstuff.id != null) {
-                    feedstuffs.push({
-                        cost: feedstuff.cost,
-                        id: feedstuff.id,
-                        maximum: feedstuff.maximum,
-                        minimum: feedstuff.minimum,
-                    });
-                }
-            }
-            const obj = {
-                currencyCode: this.selectedCurrencies[0],
-                feedstuffs,
-                formulaId: this.selectedFormula.id,
-            };
-
-            this.mainService.formulatorService.formulate(obj).subscribe((result: FormulationResult) => {
-                this.formulatorResult = result;
-                this.isFormulating = false;
-            }, (error: Error) => {
-                console.error(error);
-                this.isFormulating = false;
-            });
+        if (!this.validateFormulation()) {
+            return;
         }
+
+        this.isFormulating = true;
+        const feedstuffs: any[] = [];
+        for (const feedstuff of this.formulation.feedstuffs) {
+            if (feedstuff.id != null) {
+                feedstuffs.push({
+                    cost: feedstuff.cost,
+                    id: feedstuff.id,
+                    maximum: feedstuff.maximum,
+                    minimum: feedstuff.minimum,
+                });
+            }
+        }
+        const obj = {
+            currencyCode: this.formulation.currencyCode,
+            feedstuffs: this.formulation.feedstuffs.map((x) => {
+                return {
+                    id: x.id,
+                    minimum: x.minimum,
+                    maximum: x.maximum,
+                    cost: x.cost
+                };
+            }),
+            formulaId: this.formulation.formula.id,
+        };
+
+        this.mainService.formulatorService.formulate(obj).subscribe((result: FormulationResult) => {
+            this.formulatorResult = result;
+            this.isFormulating = false;
+        }, (error: Error) => {
+            console.error(error);
+            this.isFormulating = false;
+        });
+
     }
 
-    private updateFeedstuffValidationMessages(): void {
-        for (const feedstuff of this.formulationFeedstuffs) {
-            feedstuff.errorMessage = this.validateFeedstuff(feedstuff);
-            if (feedstuff.id !== null && this.formulationFeedstuffs.filter((x) => x.id !== null && x.id === feedstuff.id).length > 1) {
-                this.validationMessage = 'Cannot have duplicate feedstuffs';
+    private validateFormulation(): boolean {
+        this.validationMessages = [];
+
+        if (this.formulation.formula === null) {
+            this.validationMessages.push('Please select a formula');
+        }
+
+        for (const feedstuff of this.formulation.feedstuffs) {
+            if (feedstuff.id !== null && this.formulation.feedstuffs.filter((x) => x.id != null && x.id === feedstuff.id).length > 1) {
+                const f = this.feedstuffs.find(((x) => x.id === feedstuff.id));
+                this.validationMessages.push(`${f.name} cannot appear twice in the feedstuffs list`);
             }
         }
-    }
 
-    private validateFeedstuff(item: any): string {
-
-        if (!item.id) {
-            return 'Please select a feedstuff';
+        if (this.validationMessages.length > 0) {
+            return false;
         }
 
-        if (this.isEmpty(item.minimum)) {
-            return 'Please enter a minimum value';
-        }
-
-        if (this.isEmpty(item.maximum)) {
-            return 'Please enter a maximum value';
-        }
-
-        if (this.isEmpty(item.cost)) {
-            return 'Please enter a cost';
-        }
-
-        return null;
+        return true;
     }
 
     private isEmpty(value): boolean {
         return typeof value === 'string' && !value.trim() || typeof value === 'undefined' || value === null;
     }
 
-    private loadFormulaList(): void {
-        this.mainService.formulaService.listFormulas().subscribe((result: any[]) => {
-            this.formulas = result;
-        }, (error: Error) => {
-            console.error(error);
-        });
-
-        this.formulasDataSource = Observable
-            .create((observer: any) => {
-                // Runs on every search
-                observer.next(this.selectedFormulaName);
-            })
-            .mergeMap((token: string) => this.queryFormulaList(token));
-    }
-
     private loadFeedstuffList(): void {
         this.mainService.feedstuffService.listFeedstuffs().subscribe((result: Feedstuff[]) => {
             this.feedstuffs = result;
+            
+            for (const feedstuff of this.feedstuffs) {
+                let n: TreeNode = feedstuff.group === null? this.feedstuffTreeNodes.find((x) => x.id === 'user') : this.feedstuffTreeNodes.find((x) => x.id === feedstuff.group.id);
+                
+                if (!n) {
+                    n = new TreeNode(
+                        feedstuff.group === null? 'user' : feedstuff.group.id,
+                        feedstuff.group === null? 'User' : feedstuff.group.name,
+                        [
+                            new TreeNode(feedstuff.id, feedstuff.name, null)
+                        ]
+                    );
+
+                    this.feedstuffTreeNodes.push(n);
+                }
+                else {
+                    n.children.push(new TreeNode(feedstuff.id, feedstuff.name, null));
+                }
+                
+            }
         }, (error: Error) => {
             console.error(error);
         });
@@ -219,8 +178,13 @@ export class FormulatorViewModel {
             'USD',
             'ZAR',
         ];
-
-        this.selectedCurrencies = ['USD'];
     }
 
+    private loadFormulaList(): void {
+        this.mainService.formulaService.listFormulaTreeNodes().subscribe((result: TreeNode[]) => {
+            this.formulaTreeNodes = result;
+        }, (error: Error) => {
+            console.error(error);
+        });
+    }
 }

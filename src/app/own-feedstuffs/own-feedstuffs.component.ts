@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-// Services
+// imports services
 import { MainService } from '../services/main.service';
+
+// Imports view models
+import { OwnFeedstuffsViewModel } from './../view-models/own-feedstuffs-view-model';
 
 @Component({
   selector: 'app-own-feedstuffs',
@@ -9,44 +12,11 @@ import { MainService } from '../services/main.service';
 })
 export class OwnFeedstuffsComponent implements OnInit {
 
-  public feedstuffs: any[] = [];
-  public currentTimestamp = new Date();
-
-  public errorMessage = null;
-
-  public newFeedstuff: any = {
-    errorMessage: null,
-    name: null,
-  };
+  public model: any = null;
 
   constructor(private mainService: MainService) { }
 
-  public ngOnInit() {
-    this.mainService.feedstuffService.listUserFeedstuffs().subscribe((result: any[]) => {
-      this.feedstuffs = result;
-    }, (error: Error) => {
-      this.errorMessage = 'An error has occurred while loading feedstuff';
-    });
+  public ngOnInit(): void {
+    this.model = new OwnFeedstuffsViewModel(this.mainService);
   }
-
-  public onClick_CreateFeedstuff() {
-
-    if (this.newFeedstuff.name === null) {
-      this.newFeedstuff.errorMessage = 'Please enter a name';
-      return;
-    }
-    this.mainService.feedstuffService.createUserFeedstuff(this.newFeedstuff.name, null).subscribe((result: any) => {
-      window.location.href = `/ownfeedstuffedit?feedstuffId=${result.id}`;
-    }, (error: Error) => {
-      console.log(error);
-      this.newFeedstuff.errorMessage = 'An error has occurred while creating feedstuff';
-    });
-
-    this.newFeedstuff.name = null;
-  }
-
-  public onClick_EditFeedstuff(item: any) {
-    window.location.href = `/ownfeedstuffedit?feedstuffId=${item.id}`;
-  }
-
 }

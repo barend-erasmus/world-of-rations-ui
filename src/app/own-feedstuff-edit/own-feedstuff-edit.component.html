@@ -1,7 +1,7 @@
 <div id="showcase">
   <div class="container">
     <div class="section_header">
-      <h3>Own Feedstuff Edit - {{feedstuff?.name}}</h3>
+      <h3>Own Feedstuff Edit - {{model?.feedstuff?.name}}</h3>
       <br />
       <br />
       <p>
@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of elements">
+          <tr *ngFor="let item of model?.feedstuff?.elements">
             <td>{{item.name}} ({{item.code}})</td>
             <td>
               <input class="form-control" [(ngModel)]="item.value"/>
@@ -29,7 +29,7 @@
           </tr>
         </tbody>
       </table>
-      <button class="btn btn-success pull-right" (click)="onClick_Save()"><i class="fa fa-save"></i>&nbsp;Save</button>
+      <button class="btn btn-success pull-right" (click)="model?.onClick_Save()"><i class="fa fa-save"></i>&nbsp;Save</button>
     </div>
   </div>
 </div>

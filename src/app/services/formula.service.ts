@@ -13,6 +13,7 @@ import { BaseService } from './base.service';
 
 // Imports models
 import { Formula } from './../models/formula';
+import { TreeNode } from './../models/tree-node';
 
 @Injectable()
 export class FormulaService extends BaseService {
@@ -22,11 +23,18 @@ export class FormulaService extends BaseService {
    }
 
   public listFormulas(): Observable<Formula[]>  {
-    return this.get(environment.api.uri + '/api/formula/listFormula')
+    return this.get(environment.api.uri + '/api/formula/listFormulas')
       .map((res: Response) => {
         const obj: Formula[] = res.json();
+        return obj.map((x) => Formula.mapFormula(x));
+      });
+  }
 
-        return obj.map((x) => new Formula(x.id, x.name));
+  public listFormulaTreeNodes(): Observable<TreeNode[]>  {
+    return this.get(environment.api.uri + '/api/formula/listFormulaTreeNodes')
+      .map((res: Response) => {
+        const obj: TreeNode[] = res.json();
+        return obj;
       });
   }
 
