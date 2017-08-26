@@ -98,13 +98,13 @@
             </td>
             <td>
               <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
-                <span *ngIf="supplementFeestuff.weight > 5">{{supplementFeestuff.weight | number:'1.2-2'}} kg</span>
+                <span *ngIf="supplementFeestuff.weight > 5000">{{supplementFeestuff.weight / 1000 | number:'1.2-2'}} kg</span>
               </p>
               <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
-                <span *ngIf="supplementFeestuff.weight <= 5 && supplementFeestuff.weight > 1">{{supplementFeestuff.weight | number:'1.2-2'}} g</span>
+                <span *ngIf="supplementFeestuff.weight <= 5000 && supplementFeestuff.weight > 1000">{{supplementFeestuff.weight | number:'1.2-2'}} g</span>
               </p>
               <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
-                <span *ngIf="supplementFeestuff.weight <= 1">{{supplementFeestuff.weight | number:'1.2-8'}} g</span>
+                <span *ngIf="supplementFeestuff.weight <= 1000">{{supplementFeestuff.weight | number:'1.2-8'}} g</span>
               </p>
             </td>
           </tr>
