@@ -98,13 +98,7 @@
             </td>
             <td>
               <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
-                <span *ngIf="supplementFeestuff.weight > 5">{{supplementFeestuff.weight | number:'1.2-2'}} kg</span>
-              </p>
-              <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
-                <span *ngIf="supplementFeestuff.weight <= 5 && supplementFeestuff.weight > 1">{{supplementFeestuff.weight | number:'1.2-2'}} g</span>
-              </p>
-              <p *ngFor="let supplementFeestuff of item.supplementFeedstuffs">
-                <span *ngIf="supplementFeestuff.weight <= 1">{{supplementFeestuff.weight | number:'1.2-8'}} g</span>
+                <span>{{supplementFeestuff.weight | number:'1.2-2'}} g</span>
               </p>
             </td>
           </tr>
